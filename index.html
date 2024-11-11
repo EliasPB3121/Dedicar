@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dedicatoria Personalizada</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffe6e6;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #ff6666;
+            font-size: 2.5em;
+            margin-top: 20px;
+        }
+
+        /* Estilo del corazón */
+        .corazon {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            background-color: #ff6666;
+            margin: 30px auto;
+            transform: rotate(-45deg);
+            animation: latido 1s infinite;
+        }
+
+        .corazon::before,
+        .corazon::after {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: #ff6666;
+            border-radius: 50%;
+        }
+
+        .corazon::before {
+            top: -50px;
+            left: 0;
+        }
+
+        .corazon::after {
+            left: 50px;
+            top: 0;
+        }
+
+        /* Animación de latido */
+        @keyframes latido {
+            0%, 100% { transform: scale(1) rotate(-45deg); }
+            50% { transform: scale(1.2) rotate(-45deg); }
+        }
+
+        /* Estilo del mensaje */
+        .mensaje {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffe6f0;
+            border: 2px solid #ff6666;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            color: #4d4d4d;
+            font-size: 1.2em;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        /* Estilo del área editable */
+        .editable {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ff9999;
+            border-radius: 5px;
+            font-size: 1.1em;
+            background-color: #ffffff;
+        }
+
+        /* Botón de copiar enlace */
+        .btn-copiar {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #ff6666;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-copiar:hover {
+            background-color: #ff4d4d;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Título y corazón animado -->
+    <h1>Dedicatoria Personalizada</h1>
+    <div class="corazon"></div>
+
+    <!-- Mensaje predeterminado -->
+    <div class="mensaje">
+        <div id="editableNombre" class="editable" contenteditable="true">Querido/a [Nombre]</div>
+        <div id="editableMensaje" class="editable" contenteditable="true">
+            Quiero que sepas que eres alguien muy especial en mi vida. Cada momento que paso contigo llena mi corazón de alegría y amor. Gracias por ser quien eres y por hacer mi vida más hermosa.
+        </div>
+        <div id="editableFirma" class="editable" contenteditable="true">Con todo mi cariño,</div>
+        <div id="editableApodo" class="editable" contenteditable="true">Tu [apodo/nombre]</div>
+    </div>
+
+    <!-- Botón para copiar el enlace -->
+    <button class="btn-copiar" onclick="copiarEnlace()">Copiar enlace con mensaje</button>
+
+    <script>
+        function copiarEnlace() {
+            // Obtener el contenido de cada campo editable
+            const nombre = document.getElementById("editableNombre").innerText;
+            const mensaje = document.getElementById("editableMensaje").innerText;
+            const firma = document.getElementById("editableFirma").innerText;
+            const apodo = document.getElementById("editableApodo").innerText;
+            
+            // Codificar los mensajes para incluirlos en el enlace
+            const nombreCodificado = encodeURIComponent(nombre);
+            const mensajeCodificado = encodeURIComponent(mensaje);
+            const firmaCodificado = encodeURIComponent(firma);
+            const apodoCodificado = encodeURIComponent(apodo);
+            
+            // Crear un enlace con los mensajes en la URL
+            const enlace = `${window.location.origin}${window.location.pathname}?nombre=${nombreCodificado}&mensaje=${mensajeCodificado}&firma=${firmaCodificado}&apodo=${apodoCodificado}`;
+            
+            // Copiar el enlace al portapapeles
+            navigator.clipboard.writeText(enlace).then(() => {
+                alert("Enlace copiado al portapapeles. ¡Compártelo con quien desees!");
+            });
+        }
+
+        // Cargar los mensajes desde la URL si existen
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const nombre = urlParams.get('nombre');
+            const mensaje = urlParams.get('mensaje');
+            const firma = urlParams.get('firma');
+            const apodo = urlParams.get('apodo');
+
+            // Decodificar y mostrar cada campo si existe en la URL
+            if (nombre) document.getElementById("editableNombre").innerText = decodeURIComponent(nombre);
+            if (mensaje) document.getElementById("editableMensaje").innerText = decodeURIComponent(mensaje);
+            if (firma) document.getElementById("editableFirma").innerText = decodeURIComponent(firma);
+            if (apodo) document.getElementById("editableApodo").innerText = decodeURIComponent(apodo);
+        }
+    </script>
+
+</body>
+</html>
